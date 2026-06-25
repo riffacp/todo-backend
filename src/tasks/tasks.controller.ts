@@ -21,7 +21,7 @@ export class TasksController {
   getAllTasks(@Req() req: any) {
     return this.tasksService.findAll(req.user.userId);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   getTask(@Param('id') id: string) {
     return this.tasksService.findOne(Number(id));
@@ -33,11 +33,13 @@ export class TasksController {
     return this.tasksService.create(body.title, req.user.userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   deleteTask(@Param('id') id: string) {
     return this.tasksService.delete(Number(id));
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   updateTask(@Param('id') id: string, @Body() body: any) {
     return this.tasksService.update(Number(id), body.completed);
