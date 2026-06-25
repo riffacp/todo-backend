@@ -8,6 +8,7 @@ import {
   Patch,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -18,9 +19,20 @@ export class TasksController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getAllTasks(@Req() req: any) {
-    return this.tasksService.findAll(req.user.userId);
+  getAllTasks(
+    @Req() req: any,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('search') search?: string,
+  ) {
+    return this.tasksService.findAll(
+      req.user.userId,
+      Number(page) || 1,
+      Number(limit) || 10,
+      search,
+    );
   }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   getTask(@Param('id') id: string) {

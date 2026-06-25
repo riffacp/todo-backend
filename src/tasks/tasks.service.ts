@@ -30,6 +30,15 @@ export class TasksService {
       relations: {
         user: true,
       },
+      select: {
+        id: true,
+        title: true,
+        completed: true,
+        user: {
+          id: true,
+          email: true,
+        },
+      },
     });
   }
 
@@ -56,6 +65,15 @@ export class TasksService {
       where: { id },
       relations: {
         user: true,
+      },
+      select: {
+        id: true,
+        title: true,
+        completed: true,
+        user: {
+          id: true,
+          email: true,
+        },
       },
     });
   }
