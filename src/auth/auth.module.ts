@@ -15,7 +15,7 @@ import { User } from '../users/user.entity';
     PassportModule,
 
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET || 'my-super-secret-key',
       signOptions: {
         expiresIn: '1d',
       },
