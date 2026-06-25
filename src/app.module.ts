@@ -1,22 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 
 import { Task } from './tasks/task.entity';
 import { User } from './users/user.entity';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-  ],
-})
-@Module({
-  imports: [
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: 'postgresql://tasks_db_kf7n_user:Giar6iseHRGJnRdhV46mZxVu8TBfdEqL@dpg-d8l9q5egvqtc73anckbg-a.singapore-postgres.render.com/tasks_db_kf7n',
@@ -28,7 +25,5 @@ import { ConfigModule } from '@nestjs/config';
     TasksModule,
     AuthModule,
   ],
-
-  controllers: [],
 })
 export class AppModule {}
