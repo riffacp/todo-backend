@@ -86,4 +86,13 @@ export class TasksService {
     await this.taskRepository.update(id, { completed });
     return this.findOne(id);
   }
+  async getUserTaskStats() {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .leftJoin('task.user', 'user')
+      .select('user.email', 'email')
+      .addSelect('COUNT(task.id)', 'taskCount')
+      .groupBy('user.email')
+      .getRawMany();
+  }
 }

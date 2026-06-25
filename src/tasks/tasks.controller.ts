@@ -38,6 +38,11 @@ export class TasksController {
   getTask(@Param('id') id: string) {
     return this.tasksService.findOne(Number(id));
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('stats/users')
+  getUserTaskStats() {
+    return this.tasksService.getUserTaskStats();
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()
