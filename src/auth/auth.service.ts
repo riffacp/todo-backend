@@ -13,7 +13,6 @@ export class AuthService {
 
     private jwtService: JwtService,
   ) {}
-
   async register(email: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
