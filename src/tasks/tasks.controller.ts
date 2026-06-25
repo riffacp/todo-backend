@@ -43,6 +43,11 @@ export class TasksController {
   getUserTaskStats() {
     return this.tasksService.getUserTaskStats();
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('stats/completed')
+  getCompletedStats() {
+    return this.tasksService.getCompletedStats();
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

@@ -95,4 +95,14 @@ export class TasksService {
       .groupBy('user.email')
       .getRawMany();
   }
+  async getCompletedStats() {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .select('COUNT(*)', 'total')
+      .addSelect(
+        'SUM(CASE WHEN task.completed = true THEN 1 ELSE 0 END)',
+        'completed',
+      )
+      .getRawOne();
+  }
 }
