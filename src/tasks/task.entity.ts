@@ -1,14 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
-
+import { Index } from 'typeorm';
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Index()
   @Column()
-  title!: string;
-
+  title: string;
   @Column({ default: false })
   completed!: boolean;
 
