@@ -1,33 +1,69 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { Task } from './task.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<Task[]> {
-    return this.taskRepository.find();
+  async findAll(
+    userId: number,
+    page = 1,
+    limit = 10,
+    search?: string,
+  ): Promise<Task[]> {
+    return this.taskRepository.find({
+      where: {
+        user: { id: userId },
+        ...(search ? { title: Like(`%${search}%`) } : {}),
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: {
+        user: true,
+      },
+    });
   }
 
-  create(title: string): Promise<Task> {
+  async create(title: string, userId: number): Promise<Task> {
+    const user = await this.userRepository.findOneBy({
+      id: userId,
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     const task = this.taskRepository.create({
       title,
       completed: false,
+      user,
     });
 
     return this.taskRepository.save(task);
   }
+
   findOne(id: number): Promise<Task | null> {
-    return this.taskRepository.findOneBy({ id });
+    return this.taskRepository.findOne({
+      where: { id },
+      relations: {
+        user: true,
+      },
+    });
   }
+
   async delete(id: number): Promise<void> {
     await this.taskRepository.delete(id);
   }
+
   async update(id: number, completed: boolean): Promise<Task | null> {
     await this.taskRepository.update(id, { completed });
     return this.findOne(id);
