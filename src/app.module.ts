@@ -6,7 +6,15 @@ import { AuthModule } from './auth/auth.module';
 
 import { Task } from './tasks/task.entity';
 import { User } from './users/user.entity';
+import { ConfigModule } from '@nestjs/config';
 
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
+})
 @Module({
   imports: [
     TypeOrmModule.forRoot({
