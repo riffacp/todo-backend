@@ -6,7 +6,6 @@ import { AuthModule } from './auth/auth.module';
 
 import { Task } from './tasks/task.entity';
 import { User } from './users/user.entity';
-import { ToolsController } from './tools/tools.controller';
 
 @Module({
   imports: [
@@ -22,6 +21,6 @@ import { ToolsController } from './tools/tools.controller';
     AuthModule,
   ],
 
-  controllers: [ToolsController],
+  controllers: [],
 })
 export class AppModule {}
